@@ -14,11 +14,13 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      background-color: #f0f0f0;
+      background-color: #282c34;
+      color: white;
     }
 
     h1 {
-      color: #333;
+      color: #fff;
+      margin-bottom: 20px;
     }
 
     input[type="text"] {
@@ -29,6 +31,8 @@
       width: 300px;
       max-width: 100%;
       margin-bottom: 10px;
+      background-color: #fff;
+      color: #333;
     }
 
     button {
@@ -39,6 +43,7 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
@@ -47,17 +52,24 @@
 
     .result {
       background-color: #fff;
+      color: #333;
       border: 1px solid #ddd;
       border-radius: 4px;
-      padding: 10px;
+      padding: 20px;
       width: 300px;
       max-width: 100%;
-      overflow-x: auto;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
+      margin-top: 20px;
     }
 
     .result h2 {
       margin-top: 0;
+      color: #333;
+    }
+
+    .result h3 {
+      color: #007bff;
     }
 
     .result p {
@@ -67,6 +79,12 @@
     .result .unit {
       font-weight: bold;
       color: #555;
+    }
+
+    @media (max-width: 768px) {
+      input[type="text"] {
+        width: 100%;
+      }
     }
   </style>
 </head>
