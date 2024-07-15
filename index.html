@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pollen Data</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 300px;
+      max-width: 100%;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .result {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      width: 300px;
+      max-width: 100%;
+      overflow-x: auto;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .result h2 {
+      margin-top: 0;
+    }
+
+    .result p {
+      margin: 4px 0;
+    }
+
+    .result .unit {
+      font-weight: bold;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pollen Data</h1>
+  <input type="text" id="city" placeholder="Enter city name" />
+  <button onclick="getPollenData()">Get Pollen Data</button>
+  <div id="result" class="result"></div>
+
+  <script>
+    function getPollenData() {
+      const city = document.getElementById("city").value;
+      fetch(`/getPollenData?city=${encodeURIComponent(city)}`)
+        .then(response => response.json())
+        .then(data => {
+          const resultElement = document.getElementById("result");
+          if (data.message === "success" && data.data && data.data.length > 0) {
+            const pollenData = data.data[0];
+            const risk = pollenData.Risk;
+            const count = pollenData.Count;
+
+            resultElement.innerHTML = `
+              <h2>Pollen Data</h2>
+              <h3>Risk Levels:</h3>
+              <p><strong>Grass Pollen:</strong> ${risk.grass_pollen}</p>
+              <p><strong>Tree Pollen:</strong> ${risk.tree_pollen}</p>
+              <p><strong>Weed Pollen:</strong> ${risk.weed_pollen}</p>
+              <h3>Pollen Count:</h3>
+              <p><strong>Grass Pollen:</strong> ${count.grass_pollen} <span class="unit">grains/m³</span></p>
+              <p><strong>Tree Pollen:</strong> ${count.tree_pollen} <span class="unit">grains/m³</span></p>
+              <p><strong>Weed Pollen:</strong> ${count.weed_pollen} <span class="unit">grains/m³</span></p>
+            `;
+          } else {
+            resultElement.innerHTML = `<p>No pollen data available or an error occurred.</p>`;
+          }
+        })
+        .catch(error => {
+          const resultElement = document.getElementById("result");
+          resultElement.innerHTML = "Error fetching data";
+          console.error('Error:', error);
+        });
+    }
+  </script>
+</body>
+</html>
