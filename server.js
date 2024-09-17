@@ -13,7 +13,7 @@ function makeRequest(city, callback) {
     port: null,
     path: `/latest/pollen/by-place?place=${encodeURIComponent(city)}`,
     headers: {
-      "x-api-key": "14184262b40c484353e405e887f47d9f537b6c1d47edcbf11a2b725a09e84121",
+      "x-api-key": "14184262b40c484353e405e887f47d9f537b6c1d47edcbf11a2b725a09e84121", // Make sure this API key is valid
       "Content-type": "application/json"
     }
   };
@@ -26,12 +26,14 @@ function makeRequest(city, callback) {
     });
 
     res.on("end", function () {
-      const body = Buffer.concat(chunks);
-      callback(null, body.toString());
+      const body = Buffer.concat(chunks).toString();
+      console.log("API Response:", body);  // Log the API response for debugging
+      callback(null, body);
     });
   });
 
   req.on("error", (e) => {
+    console.error("Error:", e); // Log the error for debugging
     callback(e);
   });
 
@@ -49,9 +51,16 @@ app.get("/getPollenData", (req, res) => {
   if (city) {
     makeRequest(city, (err, data) => {
       if (err) {
+        console.error("Error fetching data from API:", err);
         res.status(500).send("Error fetching data from API");
       } else {
-        res.status(200).json(JSON.parse(data));
+        try {
+          const parsedData = JSON.parse(data);
+          res.status(200).json(parsedData);
+        } catch (jsonError) {
+          console.error("Error parsing JSON:", jsonError);
+          res.status(500).send("Error parsing API response");
+        }
       }
     });
   } else {
