@@ -13,7 +13,7 @@ function makeRequest(city, callback) {
     port: null,
     path: `/latest/pollen/by-place?place=${encodeURIComponent(city)}`,
     headers: {
-      "x-api-key": "0477636ea50bc6a92891f7291a3ab480c6b50b2abe69634ee0d3ff6a19c70512",
+      "x-api-key": "14184262b40c484353e405e887f47d9f537b6c1d47edcbf11a2b725a09e84121",
       "Content-type": "application/json"
     }
   };
